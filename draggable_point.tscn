@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://bcofdk73ps16m"]
+
+[ext_resource type="Script" uid="uid://dxl28x26yaygj" path="res://DraggablePoint.cs" id="1_csi1g"]
+[ext_resource type="Texture2D" uid="uid://bibfkp0hnfesf" path="res://orange_circle.png" id="2_80xom"]
+[ext_resource type="PackedScene" uid="uid://464avqib2twf" path="res://selection_area_2d.tscn" id="3_80xom"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_csi1g"]
+radius = 64.0078
+
+[sub_resource type="LabelSettings" id="LabelSettings_80xom"]
+font_size = 128
+
+[node name="DraggablePoint" type="Node2D" node_paths=PackedStringArray("PointSprite", "Area")]
+scale = Vector2(0.3, 0.3)
+script = ExtResource("1_csi1g")
+PointSprite = NodePath("Sprite2D")
+Area = NodePath("SelectionArea2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_80xom")
+
+[node name="SelectionArea2D" parent="." instance=ExtResource("3_80xom")]
+position = Vector2(788, 705)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SelectionArea2D"]
+position = Vector2(-788, -705)
+shape = SubResource("CircleShape2D_csi1g")
+
+[node name="PointTitle" type="Label" parent="."]
+offset_left = -45.0
+offset_top = -205.0
+offset_right = 196.0
+offset_bottom = -30.0
+text = "A"
+label_settings = SubResource("LabelSettings_80xom")

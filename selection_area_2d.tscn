@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://464avqib2twf"]
+
+[ext_resource type="Script" uid="uid://bvtwm4v470lux" path="res://SelectionArea2D.cs" id="1_mbemp"]
+
+[node name="SelectionArea2D" type="Area2D"]
+script = ExtResource("1_mbemp")

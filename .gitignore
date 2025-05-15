@@ -1,0 +1,5 @@
+# Godot 4+ specific ignores
+.godot/
+data_vector-test_windowsx86_32
+data_vector-test_windowsx86_64
+/android/

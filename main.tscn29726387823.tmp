@@ -1,0 +1,184 @@
+[gd_scene load_steps=6 format=3 uid="uid://ctlyn2vg2urdd"]
+
+[ext_resource type="Script" uid="uid://1lqm7vfoq42n" path="res://Main.cs" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://bcofdk73ps16m" path="res://draggable_point.tscn" id="2_0xm2m"]
+
+[sub_resource type="GDScript" id="GDScript_0xm2m"]
+script/source = "extends Control
+
+#func _process(_delta:float)->void:
+	#if (Input.is_action_just_released(\"HideUI\")):
+		#visible = !visible
+"
+
+[sub_resource type="GDScript" id="GDScript_h2yge"]
+script/source = "extends Control
+
+var on_left := true
+
+func _process(_delta: float) -> void:
+	if (!$\"../../../../..\".GetSelectedPoint()):
+		#%Control.global_position.x = 0
+		#on_left = true
+		modulate.a = 1
+	else: modulate.a = 0.5
+		
+func _on_mouse_entered():
+	if (!$\"../../../../..\".GetSelectedPoint()): return
+	var vsiz = get_viewport_rect().size
+
+	if on_left:
+		# Move to right side
+		%Control.global_position.x = vsiz.x - $\"..\".size.x*%Control.scale.x
+		on_left = false
+	else:
+		# Move to left side
+		%Control.global_position.x = 0
+		on_left = true
+"
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_0xm2m"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_ig7tw")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+anchor_mode = 0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Camera2D"]
+
+[node name="Control" type="Control" parent="Camera2D/CanvasLayer"]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+scale = Vector2(1.5, 1.5)
+mouse_filter = 2
+script = SubResource("GDScript_0xm2m")
+
+[node name="MarginContainer" type="MarginContainer" parent="Camera2D/CanvasLayer/Control"]
+layout_mode = 0
+offset_right = 298.0
+offset_bottom = 182.0
+
+[node name="PanelContainer" type="PanelContainer" parent="Camera2D/CanvasLayer/Control/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+mouse_filter = 1
+script = SubResource("GDScript_h2yge")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Camera2D/CanvasLayer/Control/MarginContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Camera2D/CanvasLayer/Control/MarginContainer/PanelContainer/HBoxContainer2"]
+layout_mode = 2
+
+[node name="TriInfoLabel" type="Label" parent="Camera2D/CanvasLayer/Control/MarginContainer/PanelContainer/HBoxContainer2/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Triangle Info"
+
+[node name="HSeparator" type="HSeparator" parent="Camera2D/CanvasLayer/Control/MarginContainer/PanelContainer/HBoxContainer2/VBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Camera2D/CanvasLayer/Control/MarginContainer/PanelContainer/HBoxContainer2/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Camera2D/CanvasLayer/Control/MarginContainer/PanelContainer/HBoxContainer2/VBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Label3" type="HBoxContainer" parent="Camera2D/CanvasLayer/Control/MarginContainer/PanelContainer/HBoxContainer2/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="AngleMode" type="Label" parent="Camera2D/CanvasLayer/Control/MarginContainer/PanelContainer/HBoxContainer2/VBoxContainer/MarginContainer/VBoxContainer/Label3"]
+layout_mode = 2
+text = "AngleMode"
+
+[node name="AngleDropDown" type="OptionButton" parent="Camera2D/CanvasLayer/Control/MarginContainer/PanelContainer/HBoxContainer2/VBoxContainer/MarginContainer/VBoxContainer/Label3"]
+layout_mode = 2
+focus_mode = 0
+selected = 0
+item_count = 2
+popup/item_0/text = "Degrees"
+popup/item_0/id = 0
+popup/item_1/text = "Radians"
+popup/item_1/id = 1
+
+[node name="CheckButton" type="CheckButton" parent="Camera2D/CanvasLayer/Control/MarginContainer/PanelContainer/HBoxContainer2/VBoxContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "Unit Circle Mode"
+
+[node name="AngleABC" type="Label" parent="Camera2D/CanvasLayer/Control/MarginContainer/PanelContainer/HBoxContainer2/VBoxContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Angle ABC"
+
+[node name="AngleBCA" type="Label" parent="Camera2D/CanvasLayer/Control/MarginContainer/PanelContainer/HBoxContainer2/VBoxContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Angle BCA"
+
+[node name="AngleCAB" type="Label" parent="Camera2D/CanvasLayer/Control/MarginContainer/PanelContainer/HBoxContainer2/VBoxContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Angle CAB"
+
+[node name="VSeparator" type="VSeparator" parent="Camera2D/CanvasLayer/Control/MarginContainer/PanelContainer/HBoxContainer2"]
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Camera2D/CanvasLayer/Control/MarginContainer/PanelContainer/HBoxContainer2"]
+layout_mode = 2
+
+[node name="CreateRigidBody" type="Button" parent="Camera2D/CanvasLayer/Control/MarginContainer/PanelContainer/HBoxContainer2/VBoxContainer2"]
+layout_mode = 2
+focus_mode = 0
+text = "Create
+Rigid Body"
+
+[node name="ResetButton" type="Button" parent="Camera2D/CanvasLayer/Control/MarginContainer/PanelContainer/HBoxContainer2/VBoxContainer2"]
+layout_mode = 2
+focus_mode = 0
+text = "Reset"
+
+[node name="DraggablePoints" type="Node2D" parent="."]
+position = Vector2(571, 344)
+
+[node name="DraggablePoint" parent="DraggablePoints" instance=ExtResource("2_0xm2m")]
+position = Vector2(-149, -98)
+
+[node name="DraggablePoint2" parent="DraggablePoints" instance=ExtResource("2_0xm2m")]
+position = Vector2(100, -100)
+
+[node name="DraggablePoint3" parent="DraggablePoints" instance=ExtResource("2_0xm2m")]
+position = Vector2(0, 100)
+
+[node name="WorldBoundaries" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBoundaries"]
+position = Vector2(0, 648)
+shape = SubResource("WorldBoundaryShape2D_0xm2m")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="WorldBoundaries"]
+position = Vector2(1152, 0)
+rotation = -1.5708
+shape = SubResource("WorldBoundaryShape2D_0xm2m")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="WorldBoundaries"]
+position = Vector2(0, 648)
+rotation = 1.5708
+shape = SubResource("WorldBoundaryShape2D_0xm2m")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="WorldBoundaries"]
+position = Vector2(1152, 0)
+rotation = 3.14159
+shape = SubResource("WorldBoundaryShape2D_0xm2m")
+
+[connection signal="mouse_entered" from="Camera2D/CanvasLayer/Control" to="Camera2D/CanvasLayer/Control" method="_on_mouse_entered"]
+[connection signal="mouse_entered" from="Camera2D/CanvasLayer/Control/MarginContainer/PanelContainer" to="Camera2D/CanvasLayer/Control/MarginContainer/PanelContainer" method="_on_mouse_entered"]
+[connection signal="item_selected" from="Camera2D/CanvasLayer/Control/MarginContainer/PanelContainer/HBoxContainer2/VBoxContainer/MarginContainer/VBoxContainer/Label3/AngleDropDown" to="." method="SetAngleMode"]
+[connection signal="toggled" from="Camera2D/CanvasLayer/Control/MarginContainer/PanelContainer/HBoxContainer2/VBoxContainer/MarginContainer/VBoxContainer/CheckButton" to="." method="SetTriangleMode"]
+[connection signal="button_up" from="Camera2D/CanvasLayer/Control/MarginContainer/PanelContainer/HBoxContainer2/VBoxContainer2/CreateRigidBody" to="." method="CreateCollisionShape"]
+[connection signal="button_up" from="Camera2D/CanvasLayer/Control/MarginContainer/PanelContainer/HBoxContainer2/VBoxContainer2/ResetButton" to="." method="Reset"]
